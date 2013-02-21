@@ -1,4 +1,5 @@
-﻿using SqlBackupCommon;
+﻿using System.Collections.Generic;
+using SqlBackupCommon;
 using System.Configuration;
 using System.ServiceProcess;
 
@@ -22,16 +23,16 @@ namespace SqlBackupWindowsService
 
         private void MakeBackup()
         {
-            _serviceExecutionHandler.ScheduleBackup(ConfigurationManager.AppSettings["BackupTriggerName"],
-                                                    ConfigurationManager.AppSettings["BackupCronExpression"],
-                                                    ConfigurationManager.AppSettings["ExportSqlConnectionString"],
-                                                    ConfigurationManager.AppSettings["DatabaseName"],
-                                                    ConfigurationManager.AppSettings["StorageConnection"],
-                                                    ConfigurationManager.AppSettings["BlobContainerName"]);
-        }
-
-        protected override void OnStop()
-        {
+            _serviceExecutionHandler.ScheduleBackup(new ServiceExecutionProperties
+                {
+                    TriggerName = ConfigurationManager.AppSettings["BackupTriggerName"],
+                    CronExpression = ConfigurationManager.AppSettings["BackupCronExpression"],
+                    DbConnectionString = ConfigurationManager.AppSettings["ExportSqlConnectionString"],
+                    DatabaseName = ConfigurationManager.AppSettings["DatabaseName"],
+                    StorageAccountName = ConfigurationManager.AppSettings["StorageAccountName"],
+                    StorageKey = ConfigurationManager.AppSettings["StorageKey"],
+                    BlobContainerName = ConfigurationManager.AppSettings["BlobContainerName"]
+                });
         }
     }
 }

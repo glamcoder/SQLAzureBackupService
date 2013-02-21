@@ -81,6 +81,7 @@
     <Compile Include="Job\MakeBackupJobHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceExecutionHandler.cs" />
+    <Compile Include="ServiceExecutionProperties.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

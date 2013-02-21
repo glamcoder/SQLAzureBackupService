@@ -22,19 +22,15 @@ namespace SqlBackupCommon.Job
         public void Execute(IJobExecutionContext context)
         {
             // Retrieving parameters from trigger
-            var connectionString = context.Trigger.JobDataMap["ExportSqlConnectionString"].ToString();
-            var databaseName = context.Trigger.JobDataMap["DatabaseName"].ToString();
-            var storageConnection = context.Trigger.JobDataMap["StorageConnection"].ToString();
-            var blobContainerName = context.Trigger.JobDataMap["BlobContainerName"].ToString();
-            
+            var properties = context.Trigger.JobDataMap["JobProperties"] as ServiceExecutionProperties;
             var tempFile = Path.GetTempFileName();
             var errorMessage = "";
 
             try
             {
                 // Trying to create BACPAC package
-                var service = new DacServices(connectionString);
-                service.ExportBacpac(tempFile, databaseName);
+                var service = new DacServices(properties.DbConnectionString);
+                service.ExportBacpac(tempFile, properties.DatabaseName);
             }
             catch (Exception ex)
             {
@@ -51,17 +47,18 @@ namespace SqlBackupCommon.Job
             try
             {
                 // Publish to Windows Azure Blob Storage
-                var storageAccount = CloudStorageAccount.Parse(storageConnection);
+                var acc = new StorageCredentialsAccountAndKey(properties.StorageAccountName, properties.StorageKey);
+                var storageAccount = new CloudStorageAccount(acc, true);
                 var client = storageAccount.CreateCloudBlobClient();
 
-                var container = client.GetContainerReference(blobContainerName);
+                var container = client.GetContainerReference(properties.BlobContainerName);
                 container.CreateIfNotExist();
 
                 // Blob has .bacpac extension if everything was good
                 // and .error extension if there was an exception
                 var blob = container.GetBlockBlobReference(
                     string.Format("{0}_{1}UTC{2}",
-                                  databaseName,
+                                  properties.DatabaseName,
                                   DateTime.UtcNow.ToString("yyyyMMdd_HHmmss"),
                                   string.IsNullOrEmpty(errorMessage) ? ".bacpac" : ".error"));
 

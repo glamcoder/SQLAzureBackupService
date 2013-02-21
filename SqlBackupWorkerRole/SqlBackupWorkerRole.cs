@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using SqlBackupCommon;
 using System.Configuration;
@@ -9,16 +10,6 @@ namespace SqlBackupWorkerRole
     {
         private ServiceExecutionHandler _serviceExecutionHandler;
 
-        private void MakeBackup()
-        {
-            _serviceExecutionHandler.ScheduleBackup(ConfigurationManager.AppSettings["BackupTriggerName"],
-                                                    ConfigurationManager.AppSettings["BackupCronExpression"],
-                                                    ConfigurationManager.AppSettings["ExportSqlConnectionString"],
-                                                    ConfigurationManager.AppSettings["DatabaseName"],
-                                                    ConfigurationManager.AppSettings["StorageConnection"],
-                                                    ConfigurationManager.AppSettings["BlobContainerName"]);
-        }
-
         public override bool OnStart()
         {
             // Set the maximum number of concurrent connections 
@@ -27,8 +18,22 @@ namespace SqlBackupWorkerRole
             // Initialize and schedule backup process
             _serviceExecutionHandler = new ServiceExecutionHandler();
             MakeBackup();
-            
+
             return base.OnStart();
+        }
+
+        private void MakeBackup()
+        {
+            _serviceExecutionHandler.ScheduleBackup(new ServiceExecutionProperties
+            {
+                TriggerName = ConfigurationManager.AppSettings["BackupTriggerName"],
+                CronExpression = ConfigurationManager.AppSettings["BackupCronExpression"],
+                DbConnectionString = ConfigurationManager.AppSettings["ExportSqlConnectionString"],
+                DatabaseName = ConfigurationManager.AppSettings["DatabaseName"],
+                StorageAccountName = ConfigurationManager.AppSettings["StorageAccountName"],
+                StorageKey = ConfigurationManager.AppSettings["StorageKey"],
+                BlobContainerName = ConfigurationManager.AppSettings["BlobContainerName"]
+            });
         }
     }
 }
