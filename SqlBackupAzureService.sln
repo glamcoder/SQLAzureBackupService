@@ -10,6 +10,24 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlBackupWindowsService", "SqlBackupWindowsService\SqlBackupWindowsService.csproj", "{A9AE7260-549A-4C86-9D04-6DF24A5DC115}"
 EndProject
 Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs34
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = SqlBackupAzureService\\SqlBackupAzureService.ccproj
+		SccProjectName1 = SqlBackupAzureService
+		SccLocalPath1 = SqlBackupAzureService
+		SccProjectUniqueName2 = SqlBackupCommon\\SqlBackupCommon.csproj
+		SccProjectName2 = SqlBackupCommon
+		SccLocalPath2 = SqlBackupCommon
+		SccProjectUniqueName3 = SqlBackupWindowsService\\SqlBackupWindowsService.csproj
+		SccProjectName3 = SqlBackupWindowsService
+		SccLocalPath3 = SqlBackupWindowsService
+		SccProjectUniqueName4 = SqlBackupWorkerRole\\SqlBackupWorkerRole.csproj
+		SccProjectName4 = SqlBackupWorkerRole
+		SccLocalPath4 = SqlBackupWorkerRole
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
