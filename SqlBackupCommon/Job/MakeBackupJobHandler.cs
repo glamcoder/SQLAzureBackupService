@@ -1,4 +1,7 @@
 ﻿using Microsoft.SqlServer.Dac;
+using Microsoft.SqlServer.TransactSql;
+using Microsoft.SqlServer.TransactSql.ScriptDom;
+using Microsoft.SqlServer.Types;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 using Quartz;
