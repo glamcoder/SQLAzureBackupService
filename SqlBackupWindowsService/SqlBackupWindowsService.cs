@@ -15,6 +15,7 @@ namespace SqlBackupWindowsService
 
         protected override void OnStart(string[] args)
         {
+            // Initialize and schedule backup process
             _serviceExecutionHandler = new ServiceExecutionHandler();
             MakeBackup();
         }

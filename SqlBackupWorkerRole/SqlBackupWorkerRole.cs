@@ -24,9 +24,10 @@ namespace SqlBackupWorkerRole
             // Set the maximum number of concurrent connections 
             ServicePointManager.DefaultConnectionLimit = 12;
 
+            // Initialize and schedule backup process
             _serviceExecutionHandler = new ServiceExecutionHandler();
             MakeBackup();
-
+            
             return base.OnStart();
         }
     }
